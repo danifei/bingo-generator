@@ -1,5 +1,11 @@
-# Bingo Generator
+📘 Available Languages: English [Galego](/README.gal.md)
 
+<p align="center">
+  <img src="/assets/bingo_card_11.png" alt="Image 1" width="30%" style="margin-right: 10px;">
+  <img src="/assets/bingo_card_39.png" alt="Image 2" width="30%">
+</p>
+
+# Bingo Generator
 This repository works as a simple implementation of a bingo card generator in Python. Just for fun.
 
 ## Installation
@@ -27,4 +33,3 @@ When everything is selected just run:
 ```bash
 python generator.py
 ```
-
