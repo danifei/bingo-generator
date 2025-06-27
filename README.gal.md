@@ -6,7 +6,7 @@
 </p>
 
 # Xerador de Bingo
-Esto só é un repo pra xerar un xerador de cartóns de bingo. De carallada.
+Esto só é un repo pra facer un xerador de cartóns de bingo. De carallada.
 
 
 ## Instalación
