@@ -1,4 +1,4 @@
-📘 Idiomas dispoñibles: [English](/README.en.md) Galego
+📘 Idiomas dispoñibles: [English](/README.md) Galego
 
 <p align="center">
   <img src="/assets/bingo_card_11.png" alt="Image 1" width="30%" style="margin-right: 10px;">
