@@ -16,14 +16,16 @@ BACKGROUND_OPACITY = 0.50           # 50% opacity
 
 # Card sizing configuration
 CARD_WIDTH = 800                    # Fixed width for all cards
-CARD_HEIGHT = 900                   # Fixed height for all cards (header + bingo grid)
+CARD_HEIGHT = 850                   # Fixed height for all cards (header + bingo grid)
 BINGO_REGION_HEIGHT = 700           # Height of the bingo grid region
 HEADER_HEIGHT = CARD_HEIGHT - BINGO_REGION_HEIGHT  # Height of the header
 
 # Card appearance
 CARD_TITLE = "Sobrado en Festas 2025"     # Title text for all cards
+CARD_SUBTITLE = "en honor a San Xoán"      # Subtitle text for all cards
 TITLE_FONT_SIZE = 40                # Font size for card title
-NUMBER_FONT_SIZE = 30               # Font size for card number
+SUBTITLE_FONT_SIZE = 30             # Font size for card subtitle (smaller than title)
+NUMBER_FONT_SIZE = 25               # Font size for card number (smallest)
 
 # 10 high-contrast colors that work well with white text
 CARD_COLORS = [
@@ -139,15 +141,18 @@ def create_bingo_card(events, bg_image_path, output_path, card_number, card_colo
     try:
         event_font = ImageFont.truetype("arial.ttf", FONT_SIZE)
         title_font = ImageFont.truetype("arial.ttf", TITLE_FONT_SIZE)
+        subtitle_font = ImageFont.truetype("arial.ttf", SUBTITLE_FONT_SIZE)
         number_font = ImageFont.truetype("arial.ttf", NUMBER_FONT_SIZE)
     except IOError:
         try:
             event_font = ImageFont.truetype("DejaVuSans.ttf", FONT_SIZE)
             title_font = ImageFont.truetype("DejaVuSans.ttf", TITLE_FONT_SIZE)
+            subtitle_font = ImageFont.truetype("DejaVuSans.ttf", SUBTITLE_FONT_SIZE)
             number_font = ImageFont.truetype("DejaVuSans.ttf", NUMBER_FONT_SIZE)
         except IOError:
             event_font = ImageFont.load_default()
             title_font = ImageFont.load_default()
+            subtitle_font = ImageFont.load_default()
             number_font = ImageFont.load_default()
             print("Using default font - consider installing arial.ttf for better results")
     
@@ -202,19 +207,29 @@ def create_bingo_card(events, bg_image_path, output_path, card_number, card_colo
     header = Image.new('RGBA', (CARD_WIDTH, HEADER_HEIGHT), card_color)
     header_draw = ImageDraw.Draw(header)
     
+    # Vertical positions for header elements
+    current_y = 20
+    
     # Add title to header
     title_bbox = title_font.getbbox(CARD_TITLE)
     title_width = title_bbox[2] - title_bbox[0]
     title_x = (CARD_WIDTH - title_width) // 2
-    header_draw.text((title_x, 20), CARD_TITLE, fill=TEXT_COLOR, font=title_font)
-    header_draw.text(((CARD_WIDTH - number_width) // 2), )
-
+    header_draw.text((title_x, current_y), CARD_TITLE, fill=TEXT_COLOR, font=title_font)
+    current_y += title_bbox[3] - title_bbox[1] + 20  # Move down with spacing
+    
+    # Add subtitle to header
+    subtitle_bbox = subtitle_font.getbbox(CARD_SUBTITLE)
+    subtitle_width = subtitle_bbox[2] - subtitle_bbox[0]
+    subtitle_x = (CARD_WIDTH - subtitle_width) // 2
+    header_draw.text((subtitle_x, current_y), CARD_SUBTITLE, fill=TEXT_COLOR, font=subtitle_font)
+    current_y += subtitle_bbox[3] - subtitle_bbox[1] + 15  # Move down with spacing
+    
     # Add card number to header
     number_text = f"Cartón #{card_number}"
     number_bbox = number_font.getbbox(number_text)
     number_width = number_bbox[2] - number_bbox[0]
-    number_x = (CARD_WIDTH - number_width) // 2
-    header_draw.text((number_x, 60), number_text, fill=TEXT_COLOR, font=number_font)
+    number_x = (CARD_WIDTH - number_width) // 2 + CARD_WIDTH//3
+    header_draw.text((number_x, current_y), number_text, fill=TEXT_COLOR, font=number_font)
     
     # Combine header and bingo region
     final_card = Image.new('RGB', (CARD_WIDTH, CARD_HEIGHT))
